@@ -1,15 +1,15 @@
 #+BEGIN_HTML
 <img src="https://www.gnu.org/software/emacs/images/emacs.png" alt="Emacs Logo" width="80" height="80" align="right">
 #+END_HTML
-#+TITLE: Emacs performance
+#+TITLE: Emacs Performance
 
 -----
-Emacs is a lisp interpreter developed way before modern Operating Systems exits. Pretty old software, older than most of our parents. Over the year learned alot about Emacs, thank to the community for having great resources starting from the Youtube to r/Emacs.
+Emacs is a Lisp interpreter developed long before modern Operating Systems existed. It is a very old software, older than most of our parents. Over the years, I have learned a lot about Emacs, thanks to the community.
 
-** Building from source
-Highly recommend building  Emacs from the source code, it allows modifying the souce code to building the custom version for peroformence and its not hard by way mean, multiple guides available on this topics.
+** Building from Source
+It is highly recommended to build Emacs from the source code. This allows you to modify the source code and build a custom version optimized for performance. It is not hard by any means, as multiple guides are available online.
 
-These flags gave me the best performance.
+These flags provided me with the best performance:
 #+begin_src sh
 ./autogen.sh \
        && ./configure CFLAGS="-march=native -Ofast -fno-finite-math-only -pipe \
@@ -20,40 +20,39 @@ These flags gave me the best performance.
 --with-gconf --with-mailutils --with-native-compilation=aot --with-tree-sitter --without-cairo
 #+end_src
 
-** Emacs daemon (must)
-Emacs has the slow startup issue which prevents alot of users from using it but out of the box it's loading is blazing fast. However most users will face it when they start developing their 'init.el'.
+** Emacs Daemon (Must)
+Emacs has a slow startup issue that prevents a lot of users from using it, but out of the box, its loading is blazing fast. However, most users will face this issue when they start developing their 'init.el'.
 
-Emacs daemon is a server whose purpose is load the 'init.el' at the startup. So, their is no need to load it again and again. Greatly improve the startup time.
+The Emacs daemon is a server whose purpose is to load the 'init.el' at startup. This eliminates the need to load it repeatedly, greatly improving startup time.
 
-Enabling daemon.
+To enable the daemon:
 #+begin_src shell
 systemctl --user enable emacs.service
 systemctl --user start emacs.service
 
-# when need to restart emacs daemon
+# When you need to restart the Emacs daemon
 systemctl --user restart emacs.service
 #+end_src
 
 ** Early-init.el
-A dedicated file to reduce the loading time, mainly I use for garbage collection, UI and  setting fonts.
+This is a dedicated file to reduce loading time. Mainly, I use it for garbage collection, UI, and setting fonts.
 
-*** Increase 'gc-cons-threshold' to 100MB for lsp heavy buffers.
+*** Increase 'gc-cons-threshold' to 100MB for LSP-heavy buffers.
 #+begin_src elisp
-(setq gc-cons-threshold 100000000) ;;
+(setq gc-cons-threshold 100000000)
 
 ;; Improve performance with language servers.
 (setq read-process-output-max (* 1024 1024)) ;; 1 MB
 #+end_src
 
-*** Tree-sitter performence enchancement
+*** Tree-sitter Performance Enhancement
 #+begin_src elisp
 (setenv "LSP_USE_PLISTS" "true")
 (setq lsp-use-plists t)
 #+end_src
 
-*** Disable 'startup/file-name-handler-alist' than enable it later for speed.
+*** Disable 'file-name-handler-alist' during startup and re-enable it later for speed.
 #+begin_src elisp
-;; Disable "file-name-handler-alist" than enable it later for speed.
 (defvar startup/file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 (add-hook 'emacs-startup-hook
@@ -62,38 +61,38 @@ A dedicated file to reduce the loading time, mainly I use for garbage collection
             (makunbound 'startup/file-name-handler-alist)))
 #+end_src
 
-*** Speed up package loading and loads package only when needed
+*** Speed up package loading and load packages only when needed.
 #+begin_src elisp
 (setq package-quickstart t)
 
 (setq use-package-always-defer t)
 #+end_src
 
-*** Suppress the startup, *scratch* buffer will be home buffer.
+*** Suppress the startup screen; *scratch* buffer will be the home buffer.
 #+begin_src elisp
 (setq
-inhibit-splash-screen t
-inhibit-startup-screen t
-inhibit-startup-message t
-inhibit-startup-buffer-menu t)
+ inhibit-splash-screen t
+ inhibit-startup-screen t
+ inhibit-startup-message t
+ inhibit-startup-buffer-menu t)
 #+end_src
 
-*** Disable backup files and modeline while laoding.
+*** Disable backup files and the modeline while loading.
 #+begin_src elisp
 (setq
-mode-line-format nil
-make-backup-files nil
-backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+ mode-line-format nil
+ make-backup-files nil
+ backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 #+end_src
 
-*** Scratch with fundamental-mode
-Important to setup the scratch buffer to open with 'fundamental-mode' so it doesn't increase load time.
+*** Set up the scratch buffer with 'fundamental-mode'.
+It is important to configure the scratch buffer to open with 'fundamental-mode' to avoid increasing load time.
 #+begin_src elisp
-initial-major-mode 'fundamental-mode
+(setq initial-major-mode 'fundamental-mode)
 #+end_src
 
 *** Fonts
-Make sure to avoid 'set-face-attributes'
+Avoid using 'set-face-attributes'.
 #+begin_src elisp
 (custom-set-faces
  ;; Default font for all text
@@ -104,131 +103,42 @@ Make sure to avoid 'set-face-attributes'
  '(line-number-current-line ((t (:foreground "yellow" :inherit line-number))))
  '(mode-line ((t (:family "Roboto Mono" :weight Bold))))
 
- ;; Comments italic
- '(font-lock-function-name-face ((t (:family "Roboto Mono":slant italic))))
- '(font-lock-variable-name-face ((t (:family "Roboto Mono":weight bold)))))
+ ;; Comments in italic
+ '(font-lock-function-name-face ((t (:family "Roboto Mono" :slant italic))))
+ '(font-lock-variable-name-face ((t (:family "Roboto Mono" :weight bold)))))
 #+end_src
 
 ** Init.el
-Moving towards the main file 'init.el', first thing I want in my personal configuration is setting 'native-comp' speed and flags. They are important for getting the performance.
+Moving on to the main file 'init.el'. The first thing I prioritize in my personal configuration is setting 'native-comp' speed and flags. These are important for enhancing performance.
 
-*** Maximum native eln speed
-Changing native-comp-speed for performance
+*** Maximum Native ELN Speed
+Changing 'native-comp-speed' for better performance:
 #+begin_src elisp
 (setq native-comp-speed 3)
 
 (native-compile-async "/usr/lib/emacs/30.2/native-lisp" 'recursively)
-(setq native-comp-compiler-options '("-march=znver3" "-Ofast" "-g0" "-fno-finite-math-only" "-fgraphite-identity" "-floop-nest-optimize" "-fdevirtualize-at-ltrans" "-fipa-pta" "-fno-semantic-interposition" "-flto=auto" "-fuse-linker-plugin"))
-
-(setq native-comp-driver-options '("-march=znver3" "-Ofast" "-g0" "-fno-finite-math-only" "-fgraphite-identity" "-floop-nest-optimize" "-fdevirtualize-at-ltrans" "-fipa-pta" "-fno-semantic-interposition" "-flto=auto" "-fuse-linker-plugin"))
+(setq native-comp-compiler-options '("-march=znver3" "-Ofast" "-g0" "-fno-finite-math-only" "-fgraphite-identity" "-floop-nest-optimize" "-fdevirtualize-at-ltrans" "-fipa-pta" "-fno-semantic-interposition"))
 #+end_src
 
-Make sure you set the 'native-lisp' location correctly otherwise their will be an error in the starting. Use 'C-h v native-comp-eln-load-path' to check the location. The flags used above are for the AMD Zen 3 processors, use accordingly.
+Ensure you set the 'native-lisp' location correctly; otherwise, there will be an error at startup. Use 'C-h v native-comp-eln-load-path' to check the location. The flags mentioned above are for ...
 
 *** Use straight.el
-'*Use-package*' will install the packages but it doesn't compile them which will we needed here.
+'*Use-package*' installs packages but does not compile them, which is needed here.
 
-*** use-package-compute-statistics
-Useful to know how much time  packages are taking. They need to be on the top of init.el in order to use 'use-package-report' function.
+*** Use-package Compute Statistics
+It is useful to know how much time packages are taking. Place this at the top of 'init.el' to use the 'use-package-report' function.
 #+begin_src elisp
 (require 'use-package)
 (setq use-package-compute-statistics t)
 #+end_src
 
+...
 
-*** use-package
-I highly recommend reading [[https://batsov.com/articles/2025/04/17/using-use-package-the-right-way/][Using use-package the right way]], summary is avoid *:init*, *:config*, *:preface* becuase they initialize the package at the startup. Also, when **:hook** is used you don't need *:defer*.
+*** Avoid Require
+Avoid 'require' as it loads the package or file each and every time you load your configuration.
 
-Google 'How to reduce Emacs loading time', these guides will suggest using :defer which I used everywhere without thinking. As a result their was no improvment instead use :hook, :custom, :bind and :mode.
-
-1) :hook - defer package loading until specific modes activates.
-2) :custom - configures package settings without triggering
-3) :bind - load when key is used.
-4) :mode - load modes when specific files are opened such as org.
-4) :commands - autoloadable without immediate loading.
-
-some examples of :hook, :custom, :bind, :mode and :commands
-
-:hook
+*** LSP
+Disable LSP logging:
 #+begin_src elisp
-(use-package
-:ensure t
-:straight t
-:hook nerd-icons)
-#+end_src
-
-:custom
-#+begin_src elisp
-(use-package kind-icon
-  :ensure t
-  :straight t
-  :hook (corfu-mode . (lambda ()
-                        (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
-                        (add-hook 'modus-themes-after-load-theme-hook #'kind-icon-reset-cache)
-                        (add-hook 'ef-themes-post-load-hook #'kind-icon-reset-cache)))
-  :custom
-  (kind-icon-use-icons t)
-  (kind-icon-default-face 'corfu-default)
-  (kind-icon-blend-background nil)
-  (kind-icon-blend-frac 0.08))
-#+end_src
-
-:bind
-#+begin_src elisp
-;; bind
-(use-package ace-jump-mode
-  :ensure t
-  :straight t
-  :hook (emacs-startup . ace-jump-mode)
-  :bind
-  ("C-c j" . 'ace-jump-mode))
-(add-hook 'ace-jump-mode-before-jump-hook (lambda ()
-                                            (message "I am jumping")))
-#+end_src
-
-:mode
-#+begin_src elisp
-(use-package org
-  :ensure t
-  :straight t
-  :mode ("\\.org\\'" . org-mode))
-#+end_src
-
-:commands
-#+begin_src elisp
-(use-package vterm
-  :ensure t
-  :straight t
-  :commands (vterm))
-#+end_src
-
-*** Avoid require
-require will load the package or file each and everytime you load it.
-
-*** Lsp
-Disable lsp logging.
-#+begin_src elisp
-(lsp-log-io nil)
-#+end_src
-
-*** Disbale line number with large files
-#+begin_src elisp
-(defun disable-line-numbers-if-large-file ()
-  "Disable line numbers if the buffer has more than 1000 lines."
-  (when (> (count-lines (point-min) (point-max)) 1000)
-    (display-line-numbers-mode 0)))
-
-(add-hook 'find-file-hook #'disable-line-numbers-if-large-file)
-#+end_src
-
-*** Simpc
-c mode to open the large C files.
-#+begin_src elisp
-(defun enable-simpc-mode-if-large-c-file ()
-  "Enable simpc-mode if the buffer is a C file and has more than 1000 lines."
-  (when (and (derived-mode-p 'c-mode) ; Check if it's a C mode buffer
-             (> (count-lines (point-min) (point-max)) 1000))
-    (simpc-mode 1)))
-
-(add-hook 'find-file-hook #'enable-simpc-mode-if-large-c-file)
+(setq lsp-log-io nil)
 #+end_src
