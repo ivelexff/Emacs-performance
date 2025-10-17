@@ -4,7 +4,7 @@
 #+TITLE: Emacs Performance
 
 -----
-Emacs is a lisp interpreter developed way before modern Operating Systems existed. Pretty old software, older than most of our parents. Over the years I learned a lot about Emacs, thanks to the community for having great resources starting from the Youtube to r/Emacs.
+Emacs is a Lisp interpreter that was developed long before, making it a remarkably old piece of software—older than most of our parents. Over the years, I’ve gained a great deal of knowledge about Emacs, largely thanks to its dedicated community. From informative YouTube videos to the discussions on r/Emacs, the wealth of resources available has been invaluable in my learning journey.
 
 ** Building from source
 Highly recommend building Emacs from the source code, it allows modifying the source code to building the custom version for performance and its not hard by any means, multiple guides available on this topics.
@@ -32,6 +32,11 @@ systemctl --user start emacs.service
 
 # when need to restart emacs daemon
 systemctl --user restart emacs.service
+#+end_src
+
+Connect using *emacsclient*
+#+begin_src shell
+emacsclient -a '' -c -n"
 #+end_src
 
 ** Early-init.el
@@ -138,6 +143,9 @@ Useful to know how much time packages are taking. They need to be on the top of 
 
 *** use-package
 I highly recommend reading [[https://batsov.com/articles/2025/04/17/using-use-package-the-right-way/][Using use-package the right way]], summary is avoid *:init*, *:config*, *:preface* because they initialize the package at the startup. Also, when *:hook* is used you don't need *:defer*.
+#+BEGIN_QUOTE
+Thank to @hkjels for pointing out, the Emacs daemon significantly reduces startup time, so deferring package loading isn't always necessary. In many cases, eagerly loading packages can improve the overall experience by avoiding delays during actual usage
+#+END_QUOTE
 
 Google 'How to reduce Emacs loading time', these guides will suggest using :defer which I used everywhere without thinking. As a result there was no improvement instead use :hook, :custom, :bind and :mode.
 
@@ -202,8 +210,15 @@ some examples of :hook, :custom, :bind, :mode and :commands
   :commands (vterm))
 #+end_src
 
-*** Avoid require
-require will load the package or file each and everytime you load it.
+*** Avoid require & load
+'require' loads a package or file once per Emacs session, and does not reload it on subsequent calls and 'load' loads and evaluates a file every time is is called. Instead use '*autoload*', it is designed for lazy loading and helps reduce startup time.
+#+begin_src elisp
+;; require 
+(require 'somepackage)
+
+;; load
+(load "path/to/some-file.el")
+#+end_src
 
 *** Lsp
 Disable lsp logging.
