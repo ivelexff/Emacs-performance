@@ -226,7 +226,7 @@ Disable lsp logging.
 (lsp-log-io nil)
 #+end_src
 
-*** Disbale line number with large files
+*** Disable line number with large files
 #+begin_src elisp
 (defun disable-line-numbers-if-large-file ()
   "Disable line numbers if the buffer has more than 1000 lines."
