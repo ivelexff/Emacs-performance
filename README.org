@@ -143,8 +143,9 @@ Useful to know how much time packages are taking. They need to be on the top of 
 
 *** use-package
 I highly recommend reading [[https://batsov.com/articles/2025/04/17/using-use-package-the-right-way/][Using use-package the right way]], summary is avoid *:init*, *:config*, *:preface* because they initialize the package at the startup. Also, when *:hook* is used you don't need *:defer*.
+
 #+BEGIN_QUOTE
-Thank to @hkjels for pointing out, the Emacs daemon significantly reduces startup time, so deferring package loading isn't always necessary. In many cases, eagerly loading packages can improve the overall experience by avoiding delays during actual usage
+ℹ️ Thank to @hkjels for pointing out, the Emacs daemon significantly reduces startup time, so deferring package loading isn't always necessary. In many cases, eagerly loading packages can improve the overall experience by avoiding delays during actual usage
 #+END_QUOTE
 
 Google 'How to reduce Emacs loading time', these guides will suggest using :defer which I used everywhere without thinking. As a result there was no improvement instead use :hook, :custom, :bind and :mode.
